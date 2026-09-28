@@ -1,0 +1,434 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* =====================================================================
+   OLIVE & STONE
+   ---------------------------------------------------------------------
+   A calm, restaurant-menu look: cream pages, a warm stone header bar,
+   deep olive green for type and dark bands, and a single terracotta
+   accent for the main call to action. Headings are Cormorant Garamond,
+   body is Inter. Buttons are square-cornered, flat and quiet; the food
+   photography does the talking.
+
+     cream ........ chalk      (#f0ebe4)  page ground
+     stone ........ porcelain  (#e6ded4)  header, alternating sections
+     olive ........ cobalt     (#2f4a42)  headings, links, dark buttons
+     terracotta ... ember      (#c27b5c)  primary call to action
+     deep green ... char       (#1d2c28)  footer, dark bands
+   ===================================================================== */
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    background-color: theme("colors.chalk.DEFAULT");
+    overflow-x: clip;
+  }
+
+  body {
+    @apply bg-chalk text-ink font-body antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-display font-medium tracking-normal;
+  }
+
+  ::selection {
+    background: rgba(194, 123, 92, 0.3);
+    color: theme("colors.cobalt.dark");
+  }
+
+  a:focus-visible,
+  button:focus-visible,
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible {
+    outline: 2px solid theme("colors.cobalt.DEFAULT");
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    * {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer components {
+  /* =================================================================
+     SECTION SURFACES
+     ================================================================= */
+  .veil-white {
+    background-color: theme("colors.chalk.DEFAULT");
+  }
+  .veil-porcelain {
+    background-color: theme("colors.porcelain.DEFAULT");
+  }
+
+  /* Page heroes on inner pages: a soft stone wash behind the heading. */
+  .hero-wall {
+    position: relative;
+    isolation: isolate;
+    background: linear-gradient(180deg, theme("colors.porcelain.DEFAULT") 0%, theme("colors.chalk.DEFAULT") 100%);
+  }
+
+  /* Dark bands: plain deep green (class name kept from the old theme). */
+  .coal-bed {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+  }
+
+  /* =================================================================
+     TRIMS
+     ================================================================= */
+  /* A short hairline rule under headings. */
+  .key-divider,
+  .key-divider-ember,
+  .key-divider-cobalt {
+    height: 1px;
+    max-width: 4rem;
+  }
+  .key-divider {
+    background: rgba(255, 255, 255, 0.5);
+  }
+  .key-divider-ember {
+    background: theme("colors.ember.DEFAULT");
+  }
+  .key-divider-cobalt {
+    background: theme("colors.cobalt.DEFAULT");
+    max-width: none;
+  }
+
+  /* Section kicker: small, wide-spaced capitals. */
+  .eyebrow-spark {
+    @apply inline-block text-[11px] font-medium uppercase tracking-[0.28em] text-cobalt-light;
+  }
+
+  /* =================================================================
+     FRAMES
+     ================================================================= */
+  /* ArchFrame (components/ornament/ArchFrame): a thin arched outline. */
+  .arch-frame__opening {
+    position: absolute;
+    inset: 0 0 12px;
+    border: 1px solid color-mix(in srgb, currentColor 30%, transparent);
+    border-bottom: 0;
+    border-radius: 50% 50% 0 0 / clamp(70px, 24%, 260px) clamp(70px, 24%, 260px) 0 0;
+  }
+  .arch-frame__step {
+    display: none;
+  }
+
+  /* Photos: kept as a wrapper with a little room underneath. */
+  .grill-ledge {
+    position: relative;
+  }
+
+  /* =================================================================
+     BUTTONS — square corners, flat colour
+     ================================================================= */
+  .btn-coal,
+  .btn-olive,
+  .btn-porcelain,
+  .btn-glass,
+  .btn-primary,
+  .btn-secondary,
+  .btn-outline-dark {
+    @apply relative inline-flex items-center justify-center rounded-none px-7 py-3 text-sm font-medium tracking-wide transition-colors duration-200;
+  }
+
+  /* Primary: terracotta. */
+  .btn-coal {
+    @apply bg-ember text-white hover:bg-ember-deep;
+  }
+
+  /* Dark olive — the header's "Order Now". */
+  .btn-olive,
+  .btn-primary {
+    @apply bg-cobalt text-white hover:bg-cobalt-dark;
+  }
+
+  /* Secondary on light grounds: olive outline. */
+  .btn-porcelain,
+  .btn-outline-dark {
+    @apply border border-cobalt/40 bg-transparent text-cobalt-dark hover:border-cobalt hover:bg-cobalt hover:text-white;
+  }
+
+  /* Secondary on photos / dark grounds: thin white outline. */
+  .btn-glass,
+  .btn-secondary {
+    @apply border border-white/40 bg-transparent text-white hover:border-white hover:bg-white/10;
+  }
+
+  /* =================================================================
+     CARDS & CONTROLS
+     ================================================================= */
+  .tile-card {
+    @apply relative rounded-none border border-cobalt/15;
+    background-color: #f7f3ee;
+  }
+
+  .chip-option {
+    @apply inline-flex items-center rounded-none border border-cobalt/20 bg-white/70 px-4 py-2.5 text-sm font-medium text-ink/80 transition-all duration-150;
+  }
+  .chip-option:hover {
+    @apply border-cobalt/50 bg-porcelain text-cobalt-dark;
+  }
+  .chip-option:active {
+    transform: scale(0.97);
+  }
+  .chip-option--on {
+    @apply border-cobalt bg-cobalt text-white;
+  }
+  .chip-option--on:hover {
+    @apply bg-cobalt text-white;
+  }
+
+  .qty-btn {
+    @apply flex h-11 w-11 items-center justify-center rounded-none border border-cobalt/20 bg-white/70 text-xl font-medium text-cobalt-dark transition-all duration-150;
+  }
+  .qty-btn:hover:not(:disabled) {
+    @apply border-cobalt bg-porcelain text-cobalt;
+  }
+  .qty-btn:active:not(:disabled) {
+    transform: scale(0.94);
+  }
+
+  .customiser-sheet {
+    animation: sheet-up 0.26s cubic-bezier(0.2, 0.9, 0.25, 1);
+  }
+  @media (min-width: 640px) {
+    .customiser-sheet {
+      animation: sheet-in 0.18s ease-out;
+    }
+  }
+
+  .added-flash {
+    animation: added-pop 0.5s cubic-bezier(0.2, 0.9, 0.25, 1);
+  }
+
+  .cart-bump {
+    animation: cart-bump 0.4s cubic-bezier(0.2, 0.9, 0.25, 1);
+  }
+
+  /* =================================================================
+     HEADER, DROPDOWN, NAV
+     ================================================================= */
+  .header-glass {
+    background-color: rgba(230, 222, 212, 0.96);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(47, 74, 66, 0.12);
+  }
+
+  .menu-panel {
+    background-color: rgba(240, 235, 228, 0.98);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 20px 36px -24px rgba(31, 51, 45, 0.45);
+  }
+  .menu-panel--grill {
+    position: relative;
+  }
+
+  .menu-panel-link {
+    @apply flex items-center justify-between border-b border-cobalt/10 px-2 py-3.5 text-base font-medium text-cobalt-dark transition-colors;
+  }
+  .menu-panel-link:hover {
+    @apply bg-porcelain/60 text-cobalt;
+  }
+
+  .quick-dock {
+    background-color: rgba(240, 235, 228, 0.96);
+    border: 1px solid rgba(47, 74, 66, 0.2);
+    box-shadow: 0 10px 26px -12px rgba(31, 51, 45, 0.45);
+    backdrop-filter: blur(12px);
+  }
+
+  /* =================================================================
+     FOOTER
+     ================================================================= */
+  .footer-coals {
+    background-color: theme("colors.char.DEFAULT");
+  }
+  .footer-grill {
+    display: none;
+  }
+
+  /* =================================================================
+     HOME HERO — a full-bleed food photograph under an olive wash
+     ================================================================= */
+  .hero-photo {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    background-color: theme("colors.cobalt.dark");
+  }
+  .hero-photo__img {
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  /* Olive wash: strongest on the left behind the copy, thinning out to
+     the right so the food still reads. */
+  .hero-photo__wash {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background:
+      linear-gradient(90deg, rgba(31, 51, 45, 0.82) 0%, rgba(31, 51, 45, 0.62) 40%, rgba(31, 51, 45, 0.28) 100%),
+      linear-gradient(180deg, rgba(31, 51, 45, 0.15) 0%, rgba(31, 51, 45, 0.35) 100%);
+  }
+
+  .hero-title {
+    text-shadow: 0 2px 18px rgba(0, 0, 0, 0.25);
+  }
+
+  .hero-rise {
+    animation: hero-rise 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+    animation-delay: var(--rise-delay, 0ms);
+  }
+
+  /* =================================================================
+     SCROLL REVEAL (components/theme/RevealOnScroll.tsx)
+     ================================================================= */
+  .reveal-ready [data-reveal] {
+    opacity: 0;
+    transform: translateY(20px);
+    transition:
+      opacity 0.8s cubic-bezier(0.2, 0.8, 0.2, 1),
+      transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+    transition-delay: var(--reveal-delay, 0ms);
+  }
+  .reveal-ready [data-reveal].is-revealed {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* =================================================================
+     HOME DETAILS
+     ================================================================= */
+  .food-card__frame {
+    overflow: hidden;
+  }
+  .food-card__img {
+    transition: transform 0.9s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  .food-card:hover .food-card__img {
+    transform: scale(1.05);
+  }
+
+  .why-item,
+  .review-quote {
+    position: relative;
+  }
+  .why-item::before,
+  .review-quote::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: -1px;
+    width: 0;
+    height: 1px;
+    background: theme("colors.ember.DEFAULT");
+    transition: width 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  .why-item:hover::before,
+  .review-quote:hover::before,
+  .is-revealed.why-item::before,
+  .is-revealed.review-quote::before {
+    width: 3.5rem;
+  }
+
+  .stat-figure {
+    font-variant-numeric: tabular-nums;
+  }
+
+  .container-page {
+    @apply mx-auto w-full max-w-6xl px-5 sm:px-8;
+  }
+}
+
+@keyframes hero-rise {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ---------- Order builder animations ---------- */
+@keyframes sheet-up {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes sheet-in {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes added-pop {
+  0% {
+    transform: scale(1);
+  }
+  35% {
+    transform: scale(1.03);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes cart-bump {
+  0% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1.25);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .customiser-sheet,
+  .added-flash,
+  .cart-bump,
+  .hero-rise {
+    animation: none;
+  }
+  .food-card:hover .food-card__img {
+    transform: none;
+  }
+  .chip-option:active,
+  .qty-btn:active:not(:disabled) {
+    transform: none;
+  }
+}

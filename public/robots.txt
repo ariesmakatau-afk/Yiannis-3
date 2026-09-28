@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# Sitemap: add once the domain is finalized, e.g.
+# Sitemap: https://yiannisonhindley.com.au/sitemap.xml
