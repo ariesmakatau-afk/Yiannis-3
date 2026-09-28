@@ -11,12 +11,23 @@
    body is Inter. Buttons are square-cornered, flat and quiet; the food
    photography does the talking.
 
+   The fire is still in it. Real glowing charcoal lies along the foot of
+   the hero and every dark olive band, its glow breathing, and live sparks
+   rise off it (<EmberField />). Sending an order makes the button throw a
+   fountain of them. The cream pages themselves stay calm.
+
      cream ........ chalk      (#f0ebe4)  page ground
      stone ........ porcelain  (#e6ded4)  header, alternating sections
      olive ........ cobalt     (#2f4a42)  headings, links, dark buttons
      terracotta ... ember      (#c27b5c)  primary call to action
      deep green ... char       (#1d2c28)  footer, dark bands
    ===================================================================== */
+
+:root {
+  /* Real charcoal, photographed glowing, cropped to just the coals (no
+     baked-in sparks: the sparks are live, from EmberField). */
+  --coal-photo: url("/images/coal-bed.jpg");
+}
 
 @layer base {
   html {
@@ -80,11 +91,47 @@
     background: linear-gradient(180deg, theme("colors.porcelain.DEFAULT") 0%, theme("colors.chalk.DEFAULT") 100%);
   }
 
-  /* Dark bands: plain deep green (class name kept from the old theme). */
+  /* The live sparks (components/theme/EmberField.tsx). Above the content,
+     but never takes a click. */
+  .ember-field {
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+
+  /* Dark olive bands stand on a bed of glowing charcoal: warm light rising
+     into the green, the coals along the bottom edge, sparks coming off. */
   .coal-bed {
     position: relative;
     isolation: isolate;
     overflow: hidden;
+  }
+  .coal-bed::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background:
+      radial-gradient(ellipse 70% 45% at 50% 110%, rgba(232, 120, 60, 0.42), transparent 70%),
+      radial-gradient(ellipse 35% 30% at 12% 106%, rgba(214, 100, 50, 0.3), transparent 70%),
+      radial-gradient(ellipse 35% 30% at 88% 106%, rgba(214, 100, 50, 0.3), transparent 70%);
+    animation: coal-breathe 4.2s ease-in-out infinite;
+    pointer-events: none;
+  }
+  .coal-bed::after {
+    content: "";
+    position: absolute;
+    inset: auto 0 0 0;
+    height: 100px;
+    z-index: -1;
+    background: var(--coal-photo) center 60% / cover no-repeat;
+    -webkit-mask-image: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.55) 35%, #000 70%);
+    mask-image: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.55) 35%, #000 70%);
+    animation: coal-glow 3.1s ease-in-out infinite;
+    pointer-events: none;
   }
 
   /* =================================================================
@@ -108,9 +155,18 @@
     max-width: none;
   }
 
-  /* Section kicker: small, wide-spaced capitals. */
+  /* Section kicker: small, wide-spaced capitals, led by one live ember. */
   .eyebrow-spark {
-    @apply inline-block text-[11px] font-medium uppercase tracking-[0.28em] text-cobalt-light;
+    @apply inline-flex items-center gap-2.5 text-[11px] font-medium uppercase tracking-[0.28em] text-cobalt-light;
+  }
+  .eyebrow-spark::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 9999px;
+    background: radial-gradient(circle at 40% 40%, #ffe6c2, #f0935a 45%, #c2582c 85%);
+    box-shadow: 0 0 8px 1px rgba(232, 120, 60, 0.5);
+    animation: spark-pulse 2.4s ease-in-out infinite;
   }
 
   /* =================================================================
@@ -146,9 +202,32 @@
     @apply relative inline-flex items-center justify-center rounded-none px-7 py-3 text-sm font-medium tracking-wide transition-colors duration-200;
   }
 
-  /* Primary: terracotta. */
+  /* Primary: terracotta, with an ember glow. On hover the coal catches:
+     a warm light runs across it and it throws a glow around itself. */
   .btn-coal {
-    @apply bg-ember text-white hover:bg-ember-deep;
+    @apply overflow-hidden bg-ember text-white;
+    isolation: isolate;
+    box-shadow: 0 6px 18px -8px rgba(194, 88, 44, 0.7);
+    transition: background-color 0.2s, box-shadow 0.3s, transform 0.2s;
+  }
+  .btn-coal::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(100deg, transparent 25%, rgba(255, 200, 140, 0.45) 50%, transparent 75%);
+    transform: translateX(-120%);
+    transition: transform 0.6s ease;
+  }
+  .btn-coal:hover {
+    @apply bg-ember-deep;
+    transform: translateY(-1px);
+    box-shadow:
+      0 0 20px 2px rgba(232, 120, 60, 0.45),
+      0 10px 24px -8px rgba(194, 88, 44, 0.8);
+  }
+  .btn-coal:hover::after {
+    transform: translateX(120%);
   }
 
   /* Dark olive — the header's "Order Now". */
@@ -255,11 +334,35 @@
   /* =================================================================
      FOOTER
      ================================================================= */
+  /* The footer is the grill: deep green steel with the coals' glow
+     coming up from below and a row of vents glowing across its top edge. */
   .footer-coals {
+    position: relative;
+    isolation: isolate;
     background-color: theme("colors.char.DEFAULT");
+    background-image:
+      radial-gradient(ellipse 80% 45% at 50% 108%, rgba(214, 100, 50, 0.32), transparent 70%),
+      linear-gradient(180deg, #243632 0%, #1d2c28 55%);
   }
   .footer-grill {
-    display: none;
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 0 4%;
+    background: linear-gradient(180deg, #34463f 0%, #22322d 60%, #18241f 100%);
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.08) inset;
+    pointer-events: none;
+  }
+  .footer-grill span {
+    width: 7px;
+    height: 7px;
+    border-radius: 9999px;
+    background: radial-gradient(circle at 45% 45%, #ffe0b8, #f0935a 55%, #b0502a 100%);
+    box-shadow: 0 0 9px 2px rgba(232, 120, 60, 0.5);
+    animation: vent-glow 2.4s ease-in-out infinite;
   }
 
   /* =================================================================
@@ -288,6 +391,32 @@
     background:
       linear-gradient(90deg, rgba(31, 51, 45, 0.82) 0%, rgba(31, 51, 45, 0.62) 40%, rgba(31, 51, 45, 0.28) 100%),
       linear-gradient(180deg, rgba(31, 51, 45, 0.15) 0%, rgba(31, 51, 45, 0.35) 100%);
+  }
+
+  /* The fire under the platter: heat rising into the wash and real coals
+     glowing along the foot of the hero, sparks streaming off them. */
+  .hero-photo__glow {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background:
+      radial-gradient(ellipse 85% 40% at 50% 104%, rgba(240, 120, 55, 0.45), transparent 72%),
+      radial-gradient(ellipse 40% 28% at 18% 102%, rgba(240, 140, 70, 0.3), transparent 70%),
+      radial-gradient(ellipse 40% 28% at 82% 102%, rgba(240, 140, 70, 0.3), transparent 70%);
+    animation: coal-breathe 5s ease-in-out infinite;
+    pointer-events: none;
+  }
+  .hero-photo__coals {
+    position: absolute;
+    inset: auto 0 0 0;
+    height: 22%;
+    min-height: 110px;
+    z-index: -1;
+    background: var(--coal-photo) center 55% / cover no-repeat;
+    -webkit-mask-image: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.6) 35%, #000 70%);
+    mask-image: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.6) 35%, #000 70%);
+    animation: coal-glow 3.4s ease-in-out infinite;
+    pointer-events: none;
   }
 
   .hero-title {
@@ -359,6 +488,59 @@
   }
 }
 
+/* ---------- Fire animations ---------- */
+@keyframes coal-breathe {
+  0%,
+  100% {
+    opacity: 0.8;
+  }
+  35% {
+    opacity: 1;
+  }
+  55% {
+    opacity: 0.7;
+  }
+  80% {
+    opacity: 0.95;
+  }
+}
+
+@keyframes coal-glow {
+  0%,
+  100% {
+    filter: brightness(1) saturate(1);
+  }
+  40% {
+    filter: brightness(1.18) saturate(1.1);
+  }
+  70% {
+    filter: brightness(0.9) saturate(0.95);
+  }
+}
+
+@keyframes vent-glow {
+  0%,
+  100% {
+    filter: brightness(1);
+  }
+  45% {
+    filter: brightness(1.35);
+  }
+  70% {
+    filter: brightness(0.85);
+  }
+}
+
+@keyframes spark-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 6px 1px rgba(232, 120, 60, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 11px 3px rgba(240, 140, 70, 0.65);
+  }
+}
+
 @keyframes hero-rise {
   from {
     opacity: 0;
@@ -421,8 +603,17 @@
   .customiser-sheet,
   .added-flash,
   .cart-bump,
-  .hero-rise {
+  .hero-rise,
+  .coal-bed::before,
+  .coal-bed::after,
+  .hero-photo__glow,
+  .hero-photo__coals,
+  .footer-grill span,
+  .eyebrow-spark::before {
     animation: none;
+  }
+  .btn-coal::after {
+    display: none;
   }
   .food-card:hover .food-card__img {
     transform: none;

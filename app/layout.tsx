@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 import BottomNav from "@/components/BottomNav";
 import StructuredData from "@/components/StructuredData";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
+import EmberField from "@/components/theme/EmberField";
 import RevealOnScroll from "@/components/theme/RevealOnScroll";
 import { siteMeta } from "@/lib/content";
 
@@ -58,6 +59,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="flex min-h-screen flex-col">
         <StructuredData />
         <GoogleAnalytics />
+        {/* Live sparks off the coals (sending an order sets off a fountain) */}
+        <EmberField />
         <RevealOnScroll />
         <a
           href="#main-content"

@@ -26,15 +26,13 @@ type Fountain = {
 };
 
 const MAX_EMBERS = 900;
-// The home hero, the dark bands, the mobile menu and the footer are drawn
-// as coal beds; sparks rise off them.
+// The home hero, the dark olive bands and the footer are drawn as coal
+// beds; sparks rise off them. The cream pages stay calm.
 const COAL_SELECTOR = ".hero-fire, .coal-bed, .footer-coals, .menu-panel--grill";
 
 /**
  * Live embers over the whole site, drawn on one canvas.
  *
- * - A few sparks always drift up from the bottom of the screen, more the
- *   further down the page you are (closer to the grill).
  * - Every coal bed on screen (the dark bands, the menu, the footer) throws
  *   off its own steady stream from its bottom edge.
  * - When an order is sent, the button it was sent from pours out a fountain
@@ -151,11 +149,7 @@ export default function EmberField() {
       last = now;
       clock += dt;
 
-      const heat = parseFloat(document.documentElement.style.getPropertyValue("--heat")) || 0;
       const narrow = width < 640;
-
-      // The floor of the screen: a light, constant drift of sparks.
-      emitAlong("floor", 0, width, height + 6, (narrow ? 4 : 8) + heat * (narrow ? 8 : 18), dt, 70);
 
       // Each coal bed on screen feeds its own stream.
       for (const el of coals) {

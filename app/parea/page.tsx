@@ -161,7 +161,7 @@ export default async function PareaPage() {
 
       {/* THE OFFER */}
       {promo.active && (
-        <section className="coal-bed relative overflow-hidden bg-char py-16 text-white sm:py-20">
+        <section className="coal-bed relative overflow-hidden bg-char pb-32 pt-16 text-white sm:pb-36 sm:pt-20">
           <CentaurMedallion className="pointer-events-none absolute right-0 top-1/2 h-[320px] w-[320px] -translate-y-1/2 translate-x-1/3 text-ember-light opacity-[0.12]" />
           <div className="container-page relative grid gap-10 lg:grid-cols-[1fr_auto] lg:items-end">
             <div>

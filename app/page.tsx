@@ -55,8 +55,10 @@ export default function HomePage() {
   return (
     <>
       {/* HERO — a full-bleed platter photo under an olive wash, copy set
-          left: small spaced kicker, big serif name, one line, two buttons. */}
-      <section className="hero-photo">
+          left: small spaced kicker, big serif name, one line, two buttons.
+          Real coals glow along its foot; EmberField streams sparks off
+          them (it finds .hero-fire). */}
+      <section className="hero-photo hero-fire">
         <Image
           src="/images/food-platters.jpg"
           alt=""
@@ -66,8 +68,10 @@ export default function HomePage() {
           className="hero-photo__img"
         />
         <div aria-hidden="true" className="hero-photo__wash" />
+        <div aria-hidden="true" className="hero-photo__glow" />
+        <div aria-hidden="true" className="hero-photo__coals" />
 
-        <div className="container-page flex min-h-[70svh] items-center py-20 sm:min-h-[560px] sm:py-24">
+        <div className="container-page flex min-h-[70svh] items-center pb-28 pt-20 sm:min-h-[580px] sm:pb-32 sm:pt-24">
           <div className="max-w-md">
             <p
               className="hero-rise text-[11px] font-medium uppercase tracking-[0.3em] text-white/75"
@@ -167,7 +171,7 @@ export default function HomePage() {
       </section>
 
       {/* HOUSE NUMBERS — over the coals, skewers between the stats */}
-      <section className="coal-bed relative bg-char py-16 sm:py-24">
+      <section className="coal-bed relative bg-char pb-32 pt-16 sm:pb-36 sm:pt-24">
         <div className="container-page relative">
           <div data-reveal className="text-center">
             <p className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-ember-light">
@@ -281,7 +285,7 @@ export default function HomePage() {
       </section>
 
       {/* FINAL CTA */}
-      <section className="coal-bed relative overflow-hidden bg-cobalt py-20 text-center text-white sm:py-28">
+      <section className="coal-bed relative overflow-hidden bg-cobalt pb-36 pt-20 text-center text-white sm:pb-40 sm:pt-28">
         <div data-reveal className="container-page relative">
           <p className="font-script text-3xl italic text-ember-light">Yamas!</p>
           <h2 className="hero-title mt-1 font-display text-3xl font-semibold sm:text-6xl">

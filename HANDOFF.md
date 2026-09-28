@@ -796,3 +796,20 @@ terracotta accent for the main call to action.
 - The fire effects are switched off: `ShopBackdrop` and `EmberField` are no
   longer mounted in the layout (files kept; `igniteEmbers` is a no-op without
   a listener). `npm run build` passes.
+
+### Charcoal & embers, brought back into Olive & Stone
+
+The fire from the old theme is back, set into the olive palette:
+- **Hero**: real coals (`coal-bed.jpg`) glow along the foot of the platter
+  photo with a breathing warm light (`.hero-photo__glow`, `.hero-photo__coals`),
+  and live sparks stream up off them.
+- **Dark olive bands** (house numbers, closing call to action, the /parea
+  offer): `.coal-bed` lays glowing charcoal along the bottom edge with sparks.
+- **Footer**: the grill's front plate returns with its vents glowing.
+- **Live sparks**: `EmberField` is mounted again (this supersedes the note
+  above). It only emits from the hero, dark bands and footer; the cream pages
+  stay calm (the old constant screen-bottom drift was removed). Sending an
+  order still throws a fountain of sparks off the button.
+- **Accents**: section kickers are led by a small pulsing ember;
+  terracotta `.btn-coal` gets an ember glow and a warm sweep on hover.
+- Everything animated is switched off for reduced-motion users.
