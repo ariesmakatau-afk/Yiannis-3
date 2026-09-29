@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import AdminShell from "@/components/staff/AdminShell";
 import CustomerWall from "@/components/staff/CustomerWall";
 import { useRef, useState } from "react";
 
@@ -55,31 +55,8 @@ export default function PhotoManager({
     }
   }
 
-  async function signOut() {
-    await fetch("/api/staff/session", { method: "DELETE" });
-    window.location.href = "/";
-  }
-
   return (
-    <div className="min-h-screen bg-porcelain">
-      <header className="border-b border-cobalt/15 bg-white">
-        <div className="container-page flex items-center justify-between gap-4 py-3.5">
-          <p className="font-display text-lg font-semibold text-cobalt-dark">Admin</p>
-          <div className="flex items-center gap-2">
-            <Link href="/kitchen" className="rounded-full border border-ink/20 px-3 py-1.5 text-xs font-semibold">
-              Kitchen
-            </Link>
-            <button
-              type="button"
-              onClick={signOut}
-              className="rounded-full border border-ink/20 px-3 py-1.5 text-xs font-semibold"
-            >
-              Sign out
-            </button>
-          </div>
-        </div>
-      </header>
-
+    <AdminShell>
       <main className="container-page max-w-xl py-8">
         <p className="eyebrow-spark">Parea Mas</p>
         <h1 className="mt-3 font-display text-2xl font-semibold text-cobalt-dark">
@@ -161,6 +138,6 @@ export default function PhotoManager({
 
         <CustomerWall initial={wall} />
       </main>
-    </div>
+    </AdminShell>
   );
 }

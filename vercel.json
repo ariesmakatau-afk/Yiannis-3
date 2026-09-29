@@ -3,6 +3,14 @@
     {
       "path": "/api/orders/digest",
       "schedule": "30 10 * * 0"
+    },
+    {
+      "path": "/api/social/weekly",
+      "schedule": "0 23 * * 6"
+    },
+    {
+      "path": "/api/social/publish-due",
+      "schedule": "30 1 * * *"
     }
   ]
 }

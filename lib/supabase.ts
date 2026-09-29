@@ -154,3 +154,38 @@ export async function uploadToStorage(
   // Cache-bust so the new photo shows immediately.
   return `${url}/storage/v1/object/public/${bucket}/${path}?v=${Date.now()}`;
 }
+
+/**
+ * List files under a folder in a Storage bucket, newest first.
+ * Returns public URLs. Folders inside `prefix` are skipped.
+ */
+export async function listStorage(
+  bucket: string,
+  prefix: string,
+  limit = 100
+): Promise<{ name: string; url: string; createdAt: string | null }[]> {
+  const { url, key } = requireConfig();
+  const res = await fetch(`${url}/storage/v1/object/list/${bucket}`, {
+    method: "POST",
+    headers: headers(key),
+    body: JSON.stringify({
+      prefix,
+      limit,
+      offset: 0,
+      sortBy: { column: "created_at", order: "desc" },
+    }),
+    cache: "no-store",
+  });
+  if (!res.ok) {
+    throw new Error(`Supabase list failed (${res.status}): ${await res.text()}`);
+  }
+  const rows = (await res.json()) as { name: string; id: string | null; created_at?: string }[];
+  const folder = prefix.replace(/\/+$/, "");
+  return rows
+    .filter((r) => r.id !== null) // null id = a sub-folder
+    .map((r) => ({
+      name: r.name,
+      url: `${url}/storage/v1/object/public/${bucket}/${folder}/${r.name}`,
+      createdAt: r.created_at ?? null,
+    }));
+}

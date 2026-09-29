@@ -84,3 +84,60 @@ alter table site_content enable row level security;
 insert into site_content (key, value)
 values ('parea_photos', '[]')
 on conflict (key) do nothing;
+
+-- ---------------------------------------------------------------------------
+-- Social media planner (/admin/social, /admin/events, /whats-on)
+-- ---------------------------------------------------------------------------
+-- Safe to run on an existing database: everything is "if not exists".
+
+-- Events: specials, live music, closures, anything worth telling people
+-- about. Shown on /whats-on and used when the weekly posts are written.
+create table if not exists events (
+  id          uuid primary key default gen_random_uuid(),
+  created_at  timestamptz not null default now(),
+  title       text        not null,
+  description text        not null default '',
+  starts_at   timestamptz not null,
+  ends_at     timestamptz,
+  location    text,
+  image_url   text,
+  -- false = internal only: used for planning posts, not listed on the site
+  is_public   boolean     not null default true
+);
+
+create index if not exists events_starts_at_idx on events (starts_at);
+
+-- One row per planned post. Drafted on Sunday, approved by the owner,
+-- published on its day to each channel in `channels`.
+create table if not exists social_posts (
+  id            uuid primary key default gen_random_uuid(),
+  created_at    timestamptz not null default now(),
+  updated_at    timestamptz not null default now(),
+  -- Monday of the week the post belongs to (shop time)
+  week_start    date        not null,
+  post_date     date        not null,
+  scheduled_for timestamptz not null,
+  title         text        not null default '',
+  caption       text        not null,
+  image_url     text,
+  channels      text[]      not null default '{facebook,instagram,website}',
+  event_id      uuid        references events (id) on delete set null,
+  -- draft → approved → published | partial | failed, or skipped
+  status        text        not null default 'draft',
+  -- per-channel outcome: { "facebook": { "ok": true, "id": "...", "link": "..." }, ... }
+  results       jsonb       not null default '{}',
+  published_at  timestamptz,
+  constraint social_posts_status_check
+    check (status in ('draft', 'approved', 'published', 'partial', 'failed', 'skipped'))
+);
+
+create index if not exists social_posts_week_idx on social_posts (week_start, post_date);
+create index if not exists social_posts_due_idx on social_posts (scheduled_for)
+  where status = 'approved';
+
+alter table events enable row level security;
+alter table social_posts enable row level security;
+
+-- Photos uploaded for posts live in the same public `media` bucket, under
+-- social/uploads/ (uploaded in the admin) and social/imported/ (copied from
+-- Facebook/Instagram so their links don't expire). No extra setup needed.

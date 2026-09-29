@@ -710,6 +710,18 @@ No `npm run build` was possible (no network in the build container). Syntax,
 import paths and named exports were checked programmatically. **Run a build
 and test the login flow before deploying.**
 
+## Update — social media planner
+
+New admin sections **Social posts** (`/admin/social`) and **Events**
+(`/admin/events`), plus a public **What's On** page (`/whats-on`, in the main
+nav). Every Sunday the week's Facebook/Instagram/website posts are drafted
+from the events and offers, with a photo chosen for each. The owner gets a
+message to review them, and approved posts go out daily. Setup, env vars and
+how to connect Facebook/Instagram are in **`SOCIAL_MEDIA.md`**. Run the new
+section of `supabase-schema.sql` first.
+
+New dependency: `@anthropic-ai/sdk`, used for the AI writer.
+
 ## Theme — "Blue, White & Fire"
 
 This repository is a copy of the Yianni's site with its own theme. Content,

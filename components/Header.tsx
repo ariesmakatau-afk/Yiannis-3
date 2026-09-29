@@ -8,6 +8,7 @@ import { business } from "@/lib/content";
 const primaryLinks = [
   { href: "/menu", label: "Menu" },
   { href: "/parea", label: "Parea Mas" },
+  { href: "/whats-on", label: "What's On" },
   { href: "/about", label: "About" },
   { href: "/location", label: "Location" },
   { href: "/contact", label: "Contact" },
